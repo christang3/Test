@@ -94,6 +94,7 @@ end
 
 module.ProcessParallel = ProcessParallel
 
+-- Copy The Entire Table 
 local function deepCopy(original)
 	local copy = {}
 	for k, v in pairs(original) do
@@ -105,6 +106,7 @@ local function deepCopy(original)
 	return copy
 end
 
+-- Turn unusable imageid to usable one
 local function ProcessImage(decalid)
 	if decalid then
 		--print(decalid)
@@ -121,6 +123,7 @@ local function ProcessImage(decalid)
 	return decalid
 end
 
+-- from num to tier
 local function RarityToTier(Rarity)
 	for i,v in pairs(TierToRarity) do
 		if v == Rarity then return i end
@@ -131,6 +134,7 @@ end
 	Main Function
 --]]---------------------
 
+-- Convert the item stats
 local function ProcessItem(item)
 	---------------------------------------------------
 	-- Convert Decal Id into ImageLabel id
@@ -145,6 +149,7 @@ local function ProcessItem(item)
 	return item
 end
 
+-- Process the entire category of each stuff
 local function ProcessCategory(tab,CatName)
 	local CatPath = type(CatName)=="table" and CatName or {CatName}
 	local newTab = {}
@@ -185,7 +190,7 @@ local function ProcessCategory(tab,CatName)
 	return newTab
 end
 
--- 
+--  get the item in category
 function module.GetItem(category,item)
 	if not module.Loaded then repeat task.wait() until module.Loaded end
 	local category = module.AllItems[category]
@@ -208,7 +213,7 @@ function module.Path(Parent,key)
 	return path
 end
 
---
+-- finditemfromid
 function module.GetID(path,id)
 	local parent = module.Path(module.AllItems,path)
 	if not parent then return end
@@ -217,7 +222,7 @@ function module.GetID(path,id)
 	end
 end
 
---
+-- main function to process all children
 local function CollectAllChildrenStat()
 	local moduleScripts = {}
 	for _, moduleScript in ipairs(script:GetChildren()) do
