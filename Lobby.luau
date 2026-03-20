@@ -29,7 +29,9 @@ local function CheckInPlayerInLobby(plr) -- Check each Lobby For The Player
 		end
 	end
 end
---------------------------------------------------------
+-----------------------------------------------------------
+-- Teleport
+-----------------------------------------------------------
 
 function TeleportWithRetry(placeId,playersTable,teleportOptions:TeleportOptions)
 	local ATTEMPT_LIMIT = 3
@@ -74,6 +76,10 @@ local function TeleportToGame(Lobby)
 	end
 	return result
 end
+
+-----------------------------------------------------------
+-- Lobby State
+-----------------------------------------------------------
 
 local function LobbyState(Lobby,dt)
 	if Lobby.Busy then return end					-- Its Teleporting
