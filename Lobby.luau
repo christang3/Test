@@ -124,18 +124,20 @@ end
 -----------------------------------------------------------
 -- Vector Utilities
 -----------------------------------------------------------
-
-local function Vector3ToTable(Vector)
+-- convert Vector3
+local function Vector3ToTable(Vector:Vector3): Table
 	return {X=Vector.X,Y=Vector.Y,Z=Vector.Z}		-- from Vector3.new(1,1,1) -> {X=1,Y=1,Z=1}
 end
 
-local function Vector3SingleAxis(Vector:Vector3,Axis:string,Number:number)
+-- change only 1 axis
+local function Vector3SingleAxis(Vector:Vector3,Axis:string,Number:number): Vector3
 	local Siz = Vector3ToTable(Vector)
 	Siz[Axis] = Number
 	return Vector3.new(Siz.X,Siz.Y,Siz.Z)
 end
 
-local function Vector3Add(Vect1,Vect2)
+-- add up 2 vector
+local function Vector3Add(Vect1:Vector3,Vect2:Vector3): Vector3
 	local Axis = {"X","Y","Z"}
 	local Siz = Vector3ToTable(Vect1)
 	local Siz2 = Vector3ToTable(Vect2)
@@ -145,7 +147,8 @@ local function Vector3Add(Vect1,Vect2)
 	return Vector3.new(Siz.X,Siz.Y,Siz.Z)
 end
 
-local function Vector3Change(Vect1,Vect2)
+-- change into 2nd vector part that arent 0
+local function Vector3Change(Vect1:Vector3,Vect2:Vector3):Vector3
 	local Axis = {"X","Y","Z"}
 	local Siz = Vector3ToTable(Vect1)
 	local Siz2 = Vector3ToTable(Vect2)
