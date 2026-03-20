@@ -18,6 +18,9 @@ type Category = {
 	[string]: Item | Category | number
 }
 
+--// Internal index
+local IDIndex: {[number]: Item} = {}
+
 --// State
 local Database: {[string]: Category} = {}
 local Loaded = false
@@ -33,6 +36,8 @@ local TierToRarity: {[string]: number} = {
 	Secret = 7,
 	Exclusive = 8,
 }
+
+local CategoryID: {[string]: number}} = {}
 
 --// Validator
 local REQUIRED_FIELDS = {
@@ -157,6 +162,16 @@ local function ProcessCategory(category: Category, path: {string}): Category
 	return result
 end
 
+local function BuildIndex()
+	for categoryName, category in pairs(Database) do
+		for itemIndex, item in pairs(category) do
+			if type(item) == "table" and item.ID then
+				IDIndex[CategoryID[categoryName].."_"..item.ID] = item
+			end
+		end
+	end
+end
+
 --// Loader: Load all ModuleScripts safely
 local function LoadModules(): {[string]: Category}
 	local modules = {}
@@ -204,11 +219,15 @@ end
 function module.Init()
 	local rawModules = LoadModules()
 
+	local index = 1
 	for categoryName, categoryData in pairs(rawModules) do
 		Database[categoryName] = ProcessCategory(categoryData, {categoryName})
+		CategoryID[categoryName] = index
+		index += 1
 	end
 
 	ApplyLuggageColors(Database)
+	BuildIndex()
 
 	print("Database Fully Loaded")
 	_G["Database"] = module
@@ -260,9 +279,9 @@ function module.GetByID(path: {string}, id: number): Item?
 	return nil
 end
 
---// Debug
-function module.DebugDump()
-	return Database
+--// API: Find by ID v2
+function module.GetByIDFast(id1:number,id2: number): Item?
+	return IDIndex[id1.."_"..id2]
 end
 
 return module
