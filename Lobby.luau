@@ -61,19 +61,19 @@ function TeleportWithRetry(placeId,playersTable,teleportOptions:TeleportOptions)
 	return success, result
 end
 
-local function TeleportToGame(Lobby)
+function module:TeleportToGame()
 	local TPOption = Instance.new("TeleportOptions")
 	TPOption.ShouldReserveServer = true
 	local TPData = {									-- Data that gonna be sent into game place
-		Players 	= #Lobby.Players,					-- Amount of player that gonna be in the game
+		Players 	= #self.Players,					-- Amount of player that gonna be in the game
 		Gamemode	= "Default",						-- The Gamemode
 		Place		= "Default",						-- The Map
 	}
 	TPOption:SetTeleportData(TPData)
-	local result = TeleportWithRetry(TARGET_PLACE_ID, Lobby.Players, TPOption)	-- Attempt At Teleport
+	local result = TeleportWithRetry(TARGET_PLACE_ID, self.Players, TPOption)	-- Attempt At Teleport
 	task.wait(1)
-	for _,plr in pairs(Lobby.Players) do
-		module.ExitLobby(plr)							-- Fail or not kicking out of the lobby
+	for _,plr in pairs(self.Players) do
+		module:ExitLobby(plr)							-- Fail or not kicking out of the lobby
 	end
 	return result
 end
@@ -99,7 +99,7 @@ function module:State(dt)
 	if self.Time < 0 then							-- When timer reach 0 its time to teleport
 		self.Busy = true
 		self.State = "Teleporting Player"
-		if TeleportToGame(self) then				-- Check if teleport successful
+		if self:TeleportToGame() then				-- Check if teleport successful
 			self.State = "Teleported"
 		else
 			self.State = "Failed To Teleport"
