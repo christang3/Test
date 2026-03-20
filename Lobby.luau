@@ -1,4 +1,5 @@
 local module = {}
+module.__index = module
 
 local RS = game:GetService("RunService")					-- better than while true do
 local CS = game:GetService("CollectionService")				-- for all thing with tag
@@ -81,42 +82,42 @@ end
 -- Lobby State
 -----------------------------------------------------------
 
-local function LobbyState(Lobby,dt)
-	if Lobby.Busy then return end					-- Its Teleporting rn so wait till it done
+function module:State(dt)
+	if self.Busy then return end					-- Its Teleporting rn so wait till it done
 	local StateText = "Checking"
-	if #Lobby.Players>=Lobby.MinPlayer then			-- More enough player required to initialize countdown
-		if #Lobby.Players >= Lobby.MaxPlayer then
-			Lobby.Time -= dt*4						-- Max Player reached speeding up
+	if #self.Players>=self.MinPlayer then			-- More enough player required to initialize countdown
+		if #self.Players >= self.MaxPlayer then
+			self.Time -= dt*4						-- Max Player reached speeding up
 		else
-			Lobby.Time -= dt						-- Count at normal rate
+			self.Time -= dt						-- Count at normal rate
 		end
-		Lobby.State = "Counting Down"
+		self.State = "Counting Down"
 	else
-		Lobby.Time = Lobby.TimeLimit				-- Set the time back to max when there aren't enough players
-		Lobby.State = "Waiting For Player"
+		self.Time = self.TimeLimit				-- Set the time back to max when there aren't enough players
+		self.State = "Waiting For Player"
 	end
-	if Lobby.Time < 0 then							-- When timer reach 0 its time to teleport
-		Lobby.Busy = true
-		Lobby.State = "Teleporting Player"
-		if TeleportToGame(Lobby) then				-- Check if teleport successful
-			Lobby.State = "Teleported"
+	if self.Time < 0 then							-- When timer reach 0 its time to teleport
+		self.Busy = true
+		self.State = "Teleporting Player"
+		if TeleportToGame(self) then				-- Check if teleport successful
+			self.State = "Teleported"
 		else
-			Lobby.State = "Failed To Teleport"
+			self.State = "Failed To Teleport"
 		end
-		Lobby.Busy = false
-	elseif Lobby.Time < 3 then						-- its nearly time for departure
-		Lobby.State = "Preparing To Teleport"
+		self.Busy = false
+	elseif self.Time < 3 then						-- its nearly time for departure
+		self.State = "Preparing To Teleport"
 	end
 end
 
-local function UpdateLobby(Lobby)
+function module:run()
 	RS.Heartbeat:Connect(function(dt)
 		-- UI Update
-		Lobby.UI.Time.Text = math.max(0,math.floor(Lobby.Time))			-- Counting Down
-		Lobby.UI.Player.Text = #Lobby.Players.."/"..Lobby.MaxPlayer		-- Update Player/MaxPlayer Text
-		Lobby.UI.State.Text = Lobby.State								-- Show how's the lobby doing
+		self.UI.Time.Text = math.max(0,math.floor(self.Time))			-- Counting Down
+		self.UI.Player.Text = #self.Players.."/"..self.MaxPlayer		-- Update Player/MaxPlayer Text
+		self.UI.State.Text = self.State									-- Show how's the lobby doing
 		
-		LobbyState(Lobby,dt)
+		self:State(dt)
 	end)
 end
 
@@ -198,7 +199,7 @@ end
 -- API Part
 -----------------------------------------------------------
 -- pretty self explanatory
-function module.EnterLobby(player:Player,Lobby)
+function module:EnterLobby(player:Player,Lobby)
 	if Lobby.MaxPlayer <= #Lobby.Players then return end		-- Doesnt pass Limit
 	if Lobby.Busy then return end								-- while it teleporting player to game
 	if CheckInPlayerInLobby(player) then return end				-- player already in lobby
@@ -211,7 +212,7 @@ function module.EnterLobby(player:Player,Lobby)
 	--print(("%s entered the zone!"):format(player.Name))
 end
 
-function module.ExitLobby(player:Players)
+function module:ExitLobby(player:Players)
 	local Lobby,num = CheckInPlayerInLobby(player)				-- Check If player actually in lobby
 	if Lobby then
 		table.remove(Lobby.Players,num)							-- Remove Player
@@ -226,7 +227,7 @@ end
 --------------------------------------------------------
 --
 --------------------------------------------------------
--- I dont think we need OOP for something like this
+-- set up OOP like y'kno usual
 local function SetupLobby(Hitbox:BasePart,Num)
 	
 	CreateWall(Hitbox)								-- Setup invis wall
@@ -234,7 +235,7 @@ local function SetupLobby(Hitbox:BasePart,Num)
 	local Zone = Util.Zone.new(Hitbox)				-- ZonePlus from utility tool I got
 	
 	-------------------------------------------
-	local Lobby = {}
+	local Lobby = setmetatable({},module)
 	Lobby.Zone = Zone
 	Lobby.Hitbox = Hitbox
 	Lobby.MaxPlayer = Settings.MaxPlayer
@@ -255,7 +256,7 @@ local function SetupLobby(Hitbox:BasePart,Num)
 	
 
 	Zone.playerEntered:Connect(function(player)
-		module.EnterLobby(player,Lobby)
+		Lobby:EnterLobby(player)
 	end)
 end
 
@@ -275,12 +276,12 @@ function module.chradded(chr)
 	local con
 	con = hum.Died:Connect(function() -- Make Player leave when reset
 		con:Disconnect()
-		module.ExitLobby(plr)
+		module:ExitLobby(plr)
 	end)
 end
  -- player removed from loader
 function module.PlayerRemoving(plr)
-	module.ExitLobby(plr)  -- Make Player leave lobby when left the game
+	module:ExitLobby(plr)  -- Make Player leave lobby when left the game
 end
 
 --------------------------------------------------------
