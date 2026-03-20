@@ -255,7 +255,7 @@ local function SetupLobby(Hitbox:BasePart)
 	table.insert(LobbyList,Lobby)
 	
 
-	Zone.playerEntered:Connect(function(player)
+	Zone.playerEntered:Connect(function(player)			-- Player Enter Lobby by just touching the thing
 		Lobby:EnterLobby(player)
 	end)
 end
