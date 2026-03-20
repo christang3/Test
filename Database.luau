@@ -1,19 +1,3 @@
---!strict
-
---[[ 
-	Database Module (Senior Version)
-
-	Responsibilities:
-	1. Load item modules
-	2. Process & normalize data
-	3. Provide query API
-
-	Design goals:
-	- Deterministic processing
-	- Safe concurrency
-	- Scalable structure
-]]
-
 local module = {}
 
 --// Services
@@ -205,6 +189,8 @@ function module.Init()
 
 	ApplyLuggageColors(Database)
 
+	print("Database Fully Loaded")
+	_G["Database"] = module
 	Loaded = true
 	return module
 end
