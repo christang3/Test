@@ -126,10 +126,10 @@ end
 -----------------------------------------------------------
 
 local function Vector3ToTable(Vector)
-	return {X=Vector.X,Y=Vector.Y,Z=Vector.Z}
+	return {X=Vector.X,Y=Vector.Y,Z=Vector.Z}		-- from Vector3.new(1,1,1) -> {X=1,Y=1,Z=1}
 end
 
-local function Vector3SingleAxis(Vector,Axis,Number)
+local function Vector3SingleAxis(Vector:Vector3,Axis:string,Number:number)
 	local Siz = Vector3ToTable(Vector)
 	Siz[Axis] = Number
 	return Vector3.new(Siz.X,Siz.Y,Siz.Z)
