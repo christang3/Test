@@ -124,7 +124,7 @@ end
 -----------------------------------------------------------
 -- Vector Utilities
 -----------------------------------------------------------
--- convert Vector3
+-- convert Vector3 to table value easier to handle on math
 local function Vector3ToTable(Vector:Vector3): Table
 	return {X=Vector.X,Y=Vector.Y,Z=Vector.Z}		-- from Vector3.new(1,1,1) -> {X=1,Y=1,Z=1}
 end
