@@ -250,7 +250,7 @@ local function SetupLobby(Hitbox:BasePart)
 	UI.Title.Text = Hitbox.Name
 	UI.Parent = Hitbox	
 	Lobby.UI = UI
-	UpdateLobby(Lobby)
+	Lobby:run()
 	-------------------------------------------
 	table.insert(LobbyList,Lobby)
 	
