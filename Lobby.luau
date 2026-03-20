@@ -228,7 +228,7 @@ end
 --
 --------------------------------------------------------
 -- set up OOP like y'kno usual
-local function SetupLobby(Hitbox:BasePart)
+function module.new(Hitbox:BasePart)
 	
 	CreateWall(Hitbox)								-- Setup invis wall
 
@@ -264,7 +264,7 @@ end
 -- initialize the module
 function module.Init()
 	for i,v in pairs(CS:GetTagged(Tag)) do
-		SetupLobby(v)
+		module.new(v)
 	end
 end
 
