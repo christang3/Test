@@ -82,7 +82,7 @@ end
 -----------------------------------------------------------
 
 local function LobbyState(Lobby,dt)
-	if Lobby.Busy then return end					-- Its Teleporting
+	if Lobby.Busy then return end					-- Its Teleporting rn so wait till it done
 	local StateText = "Checking"
 	if #Lobby.Players>=Lobby.MinPlayer then			-- More enough player required to initialize countdown
 		if #Lobby.Players >= Lobby.MaxPlayer then
