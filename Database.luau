@@ -34,6 +34,11 @@ local TierToRarity: {[string]: number} = {
 	Exclusive = 8,
 }
 
+--// Validator
+local REQUIRED_FIELDS = {
+	"Name",
+	"ID"
+}
 --// Internal Cache
 local ImageCache: {[number]: string} = {}
 
@@ -47,6 +52,7 @@ local function RarityToTier(rarity: number): string?
 	return nil
 end
 
+
 --// Utility: Deep copy
 local function DeepCopy<T>(original: T): T
 	local copy = {} :: any
@@ -57,6 +63,18 @@ local function DeepCopy<T>(original: T): T
 
 	return copy
 end
+
+--// Utility: Validate Item
+local function ValidateItem(item: Item): boolean
+	for _, field in ipairs(REQUIRED_FIELDS) do
+		if item[field] == nil then
+			warn(`Item missing field: {field}`)
+			return false
+		end
+	end
+	return true
+end
+
 
 --// Utility: Normalize image asset
 local function NormalizeImage(assetId: number?): string
@@ -121,6 +139,9 @@ local function ProcessCategory(category: Category, path: {string}): Category
 
 		-- Leaf item
 		if item.Name then
+			if not ValidateItem(item) then
+				continue
+			end
 			local processed = ProcessItem(item, path)
 			result[item.Name] = processed
 			continue
