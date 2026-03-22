@@ -7,8 +7,6 @@ module.__index = module
 
 -- Services
 local RS = game:GetService("RunService")
-local TS = game:GetService("TweenService")
-local TI = TweenInfo.new(.5)
 
 -- External Dependencies
 local Util = _G["Utility"]
