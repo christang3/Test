@@ -36,6 +36,7 @@ function module:TakeItem(plr,arg)
 	local selectedkey = arg[2]
 	local Inv = self.Inventory
 	local Item = Inv[num]
+	-- _G["self"] -> The main game handler that contain most in-game codes
 	if Item then
 		_G["self"]:TakeItem(plr,Inv,num)
 	elseif #Inv<self.ItemLimit then
@@ -49,7 +50,7 @@ end
 ============================================================]]
 
 -- Shows the chest inventory to connected clients
--- Only shows if chest is not locked (no active puzzles)
+-- Only shows if chest is not locked (no active puzzles/other type of locks)
 function module:ShowInventory()
 	if #self.Lock <= 0 then
 		self.Client.Inventory = self.Inventory
