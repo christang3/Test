@@ -235,14 +235,7 @@ function module:NewInventory()
 	local arg = {}
 	arg.InvLimit = self.ItemLimit
 	arg.Parent = self.UI and (self.UI:FindFirstChild("Inventory",true) or self.UI:FindFirstChild("Inv",true))
-	arg.SelectFunction = function(plr,num)
-		--print(plr,num)
-		if num then
-			--self:TakeItem(plr,Inv,num)
-		else
-			--self:TakeItem(Inv,plr,num)
-		end
-	end
+	arg.SelectFunction = nil
 	self.InvMod = Inv.newInventory(arg)
 end
 
