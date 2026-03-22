@@ -234,6 +234,7 @@ function module:NewInventory()
 	local Inv = require(game.ReplicatedStorage.Shared.InventoryModule)
 	local arg = {}
 	arg.InvLimit = self.ItemLimit
+	-- Find anything that remotely name inv and set up inventory there
 	arg.Parent = self.UI and (self.UI:FindFirstChild("Inventory",true) or self.UI:FindFirstChild("Inv",true))
 	arg.SelectFunction = nil
 	self.InvMod = Inv.newInventory(arg)
