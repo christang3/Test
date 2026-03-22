@@ -277,8 +277,7 @@ function module.chradded(chr)
 	local plr = game.Players:GetPlayerFromCharacter(chr)
 	local hum = chr:WaitForChild("Humanoid")
 	local con
-	con = hum.Died:Connect(function() -- Make Player leave when reset
-		con:Disconnect()
+	con = hum.Died:Once(function() -- Make Player leave when reset
 		module:ExitLobby(plr)
 	end)
 end
