@@ -289,7 +289,8 @@ end
 -- @param Prompt: The ProximityPrompt that triggers chest interaction
 -- @param Inv: Table of items to place in the chest
 -- @return: New chest instance
-function module.newChest(Prompt:ProximityPrompt,Inv:{})
+function module.newChest(arg{Prompt:ProximityPrompt,Inv:{},ItemLimit:number})
+	local Prompt = arg.Prompt
 	-- Create chest instance with metatable
 	local self = setmetatable({},module)
 	self.Model = Prompt.Parent
@@ -303,7 +304,7 @@ function module.newChest(Prompt:ProximityPrompt,Inv:{})
 	
 	-- Initialize chest state
 	self.Lock = {}
-	self.ItemLimit = 4
+	self.ItemLimit = arg.ItemLimit or 4
 	
 	-- Load modules and update client
 	self:LoadChestModule()
@@ -319,7 +320,8 @@ function module.newChest(Prompt:ProximityPrompt,Inv:{})
 	end)
 	
 	-- Process inventory items - convert names to database items
-	for i,v in pairs(Inv) do
+	local Inv = {}
+	for i,v in pairs(arg.Inv) do
 		Inv[i] = _G["Database"].Item[v] or v
 	end
 	
