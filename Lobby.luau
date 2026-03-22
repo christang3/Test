@@ -11,7 +11,6 @@ local DebugMode = false
 local UI = script.BillboardGui								-- the ui of lobby
 local Tag = "TPZone"										-- Find all box with this tag
 local Util = _G["Utility"]									-- all the other utility/libs I have
-_G.SpawnPos = CFrame.new()									-- this one wasn't used
 
 local Settings = {
 	MinPlayer = 2,
@@ -273,16 +272,16 @@ end
 
 --------------------------------------------------------
  -- character added from loader
-function module.chradded(chr)
+function module.chradded(chr:Model)
 	local plr = game.Players:GetPlayerFromCharacter(chr)
 	local hum = chr:WaitForChild("Humanoid")
 	local con
-	con = hum.Died:Once(function() -- Make Player leave when reset
+	hum.Died:Once(function() -- Make Player leave when reset
 		module:ExitLobby(plr)
 	end)
 end
  -- player removed from loader
-function module.PlayerRemoving(plr)
+function module.PlayerRemoving(plr:Player)
 	module:ExitLobby(plr)  -- Make Player leave lobby when left the game
 end
 
