@@ -310,6 +310,7 @@ function module.newChest(arg{Prompt:ProximityPrompt,Inv:{},ItemLimit:number})
 	-- Load modules and update client
 	self:LoadChestModule()
 	self:UpdateClient()
+	-- All the variables passed this point are hidden from clients
 	--self:NewInventory()
 	
 	-- Set up remote event handlers
