@@ -227,6 +227,9 @@ function module:TeleportAllPlayersToGame()
 	-- Attempt teleportation
 	local success, errorResult = TeleportWithRetry(TARGET_PLACE_ID, self.Players, teleportOptions)
 	task.wait(1)
+	if DebugMode then
+		warn(string.format("Teleport Failed:  %q+",errorResult)
+	end
 	
 	-- Remove all players from lobby regardless of teleport success
 	for _, player in ipairs(self.Players) do
